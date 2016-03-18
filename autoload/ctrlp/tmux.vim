@@ -19,9 +19,9 @@ function! ctrlp#tmux#init()
 endfunction
 
 function! ctrlp#tmux#accept(mode, str)
-  let session = matchstr(a:str, '^[a-zA-Z0-9]*')
+  let session = matchstr(a:str, '^[^:]*')
   let com = 'tmux switch-client -t ' . session
-  execute "silent!" . com
+  execute "silent !" . com
 
   call ctrlp#exit()
 endfunction
