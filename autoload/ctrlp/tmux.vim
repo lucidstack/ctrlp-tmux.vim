@@ -43,9 +43,6 @@ endfunction
 
 " (optional) Do something after exiting ctrlp
 function! ctrlp#tmux#exit()
-  if (s:sessions)
-    unlet! s:sessions
-  endif
 endfunction
 
 " Give the extension an ID
