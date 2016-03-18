@@ -34,8 +34,11 @@ endfunction
 "  a:str    the selected string
 "
 function! ctrlp#tmux#accept(mode, str)
-  system('tmux switch-client -t' . str)
-	call ctrlp#exit()
+  let session = matchstr(a:str, '^[a-zA-Z0-9]*')
+  let com = 'tmux switch-client -t ' . session
+  execute "silent!" . com
+
+  call ctrlp#exit()
 endfunction
 
 " (optional) Do something after exiting ctrlp
