@@ -5,6 +5,13 @@ day, folks!
 
 [![asciicast](https://asciinema.org/a/eey01oxa2bmp7pdfjrf7378z1.png)](https://asciinema.org/a/eey01oxa2bmp7pdfjrf7378z1)
 
+## Feature
+
+1. tmux session list and switch
+2. tmux windows list and switch
+3. tmux command list and execute(interactively)
+4. tmux buffer list and paste
+
 ## Installation
 
 Use your favourite method to get this repository.
@@ -24,9 +31,13 @@ let g:ctrlp_extensions = ['buffertag', 'tag', 'tmux']
 ## Usage
 
 ```viml
-"w for select windows,s for select sessions
+"w for select windows
+"s for select sessions
+"c for tmux command
+"ci same as above,but allow user input thr argument of command
+"b for tmux buffer
 "bracket mean optional.Operation type is sessions without any argument.
-:CtrlPTmux [w|s]
+:CtrlPTmux [s|w|c|ci|b]
 ```
 
 #### (Optional) Add a leader shortcut
