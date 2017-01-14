@@ -20,9 +20,13 @@ function! ctrlp#tmux#init() abort
 endfunction
 
 function! ctrlp#tmux#accept(mode, str) abort
-  let l:session = matchstr(a:str, '^[^:]*')
-  let l:com = s:com . l:session
-  execute 'silent !' . l:com
+  let l:tmux_cmd = matchstr(a:str, '^[^:]*')
+  if s:mode ==# 'ci'
+      let l:cmd_arg=input(a:str.' ')
+      execute 'silent !' . s:com . l:tmux_cmd.' '.l:cmd_arg
+  else
+      execute 'silent !' . s:com . l:tmux_cmd
+  endif
   :redraw!
   call ctrlp#exit()
 endfunction
@@ -35,17 +39,20 @@ endfunction
 function! ctrlp#tmux#start(...) abort
   if a:0 == 1
     let s:mode=a:1
-    if  a:1 ==? 'w'
+    if  a:1 ==# 'w'
       let s:com = 'tmux select-window -t '
       let s:text = split(system('tmux list-windows'), '\n')
-    elseif a:1 ==? 's'
+    elseif a:1 ==# 's'
       let s:com = 'tmux switch-client -t '
       let s:text = split(system('tmux list-sessions'), '\n')
-    elseif a:1 ==? 'c'
+    elseif a:1 ==# 'c'
+      let s:com = 'tmux '
+      let s:text = split(system('tmux list-command -F "#{command_list_name}: #{command_list_usage}"'), '\n')
+    elseif a:1 ==# 'ci'
       let s:com = 'tmux '
       let s:text = split(system('tmux list-command -F "#{command_list_name}: #{command_list_usage}"'), '\n')
     else
-      echohl ErrorMsg | echo 'Usage:CtrlPTmux [s|w|c]' | echohl none
+      echohl ErrorMsg | echo 'Usage:CtrlPTmux [s|w|c|ci]' | echohl none
       return 1
     endif
   else
