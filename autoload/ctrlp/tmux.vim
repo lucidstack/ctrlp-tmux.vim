@@ -13,15 +13,16 @@ call add(g:ctrlp_ext_vars, {
   \ 'specinput': 0,
   \ })
 
-let s:text     = ''
+let s:text = ''
+let s:mode = ''
 function! ctrlp#tmux#init() abort
   return s:text
 endfunction
 
 function! ctrlp#tmux#accept(mode, str) abort
   let l:session = matchstr(a:str, '^[^:]*')
-  let com = s:com . l:session
-  execute 'silent !' . com
+  let l:com = s:com . l:session
+  execute 'silent !' . l:com
   :redraw!
   call ctrlp#exit()
 endfunction
@@ -33,14 +34,18 @@ endfunction
 
 function! ctrlp#tmux#start(...) abort
   if a:0 == 1
+    let s:mode=a:1
     if  a:1 ==? 'w'
       let s:com = 'tmux select-window -t '
       let s:text = split(system('tmux list-windows'), '\n')
     elseif a:1 ==? 's'
       let s:com = 'tmux switch-client -t '
       let s:text = split(system('tmux list-sessions'), '\n')
+    elseif a:1 ==? 'c'
+      let s:com = 'tmux '
+      let s:text = split(system('tmux list-command -F "#{command_list_name}: #{command_list_usage}"'), '\n')
     else
-      echohl ErrorMsg | echo 'Usage:CtrlPTmux [s|w]' | echohl none
+      echohl ErrorMsg | echo 'Usage:CtrlPTmux [s|w|c]' | echohl none
       return 1
     endif
   else
