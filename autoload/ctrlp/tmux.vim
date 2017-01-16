@@ -35,7 +35,7 @@ function! ctrlp#tmux#accept(mode, str) abort
       let l:buffer=split(system(s:com.l:tmux_name),"\n")
       let l:line_no=line('.')
       for l:i in l:buffer
-          call setline(l:line_no, getline('.') . l:i)
+          call setline(l:line_no, getline(l:line_no) . l:i)
           let l:line_no+=1
       endfor
   endif
